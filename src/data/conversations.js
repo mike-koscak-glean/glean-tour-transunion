@@ -1,538 +1,562 @@
 const GLEAN_IMG = "https://app.glean.com/images";
 
+const PROCORE = { letter: "P", color: "#F15A29" };
+
 export const flows = [
   /* ═══════════════════════════════════════════════════════
-   * FLOW 0 — Sales / GTM
+   * FLOW 0 — IT / Service Desk
    * ═══════════════════════════════════════════════════════ */
   {
-    id: "sales",
+    id: "it",
     persona: {
-      title: "Sales / GTM",
-      subtitle: "Strategic Account Executive",
+      title: "IT / Service Desk",
+      subtitle: "Director of IT Services",
     },
     greeting: "Good afternoon",
     userQuery:
-      "Give me a full account overview for Fidelity Investments including contract status, recent Gong call themes, open Salesforce opportunities, and cross-sell potential into PitchBook or Sustainalytics",
+      "A new field superintendent starts Monday on our Phoenix data center project. What access, devices, and software should we provision, who needs to approve it, and what can we automate right now?",
 
-    aiResponse: `Here's your **Account 360 overview** for Fidelity Investments:
+    aiResponse: `Here's your **new hire provisioning overview** for the Phoenix Data Center project field superintendent starting Monday:
 
-**1. Contract & Revenue Summary**
-Fidelity holds a $2.4M annual contract across Morningstar Direct ($1.8M, renewed Jan 2025) and Morningstar Data ($620K, up for renewal June 2025). The account has grown 18% YoY, driven by expanded Direct seat count from 85 to 112 analysts in their equity research group.¹
+**1. Required Access & Software**
+Based on the Field Superintendent role profile and Phoenix DC project configuration, the following should be provisioned on Day 1:
+- **M365** (Exchange, Teams, OneDrive) — standard company license
+- **Procore** — project-level access for Phoenix DC Campus; recommended role is "Project Manager" to allow RFI and submittal review¹
+- **Bluebeam Revu** — confirm whether standard or Studio license is needed for external subcontractor collaboration
+- **VPN (GlobalProtect)** — required for remote SharePoint and ServiceNow access from the field
+- **Procore Safety** — mandatory for all field personnel on active job sites; auto-enrollment can be triggered via ServiceNow workflow²
 
-**2. Recent Engagement Activity**
-Over the past 90 days, there have been 14 logged Gong calls with Fidelity stakeholders. Key themes include: concerns about historical data accuracy for alternative asset classes, interest in ESG integration via Sustainalytics, and a request from their Head of Fixed Income for a PitchBook private credit dataset demo. The most recent call (Feb 12) flagged a potential churn risk — their data ops team is evaluating a Bloomberg terminal expansion for equity analytics.²³
+**2. Approvals Required**
+| Access | Approver | SLA |
+|--------|----------|-----|
+| Procore Admin Rights | Project Executive | 1 business day |
+| Device Exception (non-standard laptop) | IT Manager | 2 business days |
+| Elevated External Sharing | Information Security | 3 business days |
+| VPN + M365 License | Helpdesk auto-approval | Same-day |³
 
-**3. Open Salesforce Opportunities**
-- **Sustainalytics ESG Data Feed** — $340K, Stage 3 (Proposal), close date March 2025
-- **PitchBook LCD Add-On** — $180K, Stage 2 (Discovery), close date Q2 2025
-- **Direct Enterprise Renewal** — $1.8M, Stage 4 (Negotiation), close date June 2025¹
+**3. Known Blockers**
+- **Laptop lead time**: The standard field configuration (Dell Latitude 5540 ruggedized) currently has a 5-business-day lead time from IT supply — this request should go in immediately if not already in flight
+- **Cost-code access**: Phoenix DC has non-standard cost codes due to its joint-venture structure; Procore cost-code access requires manual configuration by the project controls team
+- **No standard template for field hires**: Existing ServiceNow provisioning templates are scoped to office roles; a Field Superintendent profile does not yet exist in the request catalog³
 
-**4. Cross-Sell Recommendations**
-Based on similar accounts (T. Rowe Price, Wellington), Fidelity's equity research usage pattern suggests strong fit for:
-- Morningstar Indexes licensing for internal benchmark creation (avg. deal at comparable firms: $400K)
-- Sustainalytics EU Taxonomy module given their SFDR reporting obligations⁴
+**4. Recommended Next Step**
+Generating a consolidated ServiceNow request bundle with pre-populated approvers would collapse the current 3-ticket manual process and reduce average provisioning time from 4.2 days to same-day for standard access items. The bundle can also trigger an Okta group assignment for the "Construction Field" role automatically.⁴
 
-Would you like me to draft a QBR agenda for the Fidelity renewal, or generate a competitive positioning brief against the Bloomberg evaluation?`,
+Would you like me to draft the ServiceNow request bundle and approval checklist now?`,
 
     sources: [
       {
         id: 1,
-        title: "Fidelity Investments — Account Record...",
-        subtitle: "Salesforce · Institutional Sales",
-        iconUrl: `${GLEAN_IMG}/logos/salesforce.svg`,
+        title: "Field New Hire Provisioning SOP",
+        subtitle: "ServiceNow · IT Service Desk",
+        iconUrl: `${GLEAN_IMG}/logos/servicenow.svg`,
         iconFallback: null,
-        author: "Ryan Parker",
+        author: "Raj Patel",
         excerpt:
-          "Fidelity holds a $2.4M annual contract across Morningstar Direct ($1.8M, renewed Jan 2025) and Morningstar Data ($620K, up for renewal June 2025). Account has grown 18% YoY driven by expanded Direct seat count.",
+          "Procore project-level access for Phoenix DC should be provisioned at the 'Project Manager' role. Auto-enrollment in Procore Safety is triggered via ServiceNow workflow for all field personnel on active sites.",
       },
       {
         id: 2,
-        title: "Gong Call Summary — Fidelity Q4 Review...",
-        subtitle: "Gong · Institutional Sales",
-        iconUrl: `${GLEAN_IMG}/logos/gong.svg`,
+        title: "Construction Roles Access Matrix",
+        subtitle: "Okta · Identity & Access",
+        iconUrl: `${GLEAN_IMG}/logos/okta.svg`,
         iconFallback: null,
-        author: "Lisa Yamamoto",
+        author: "Dana Marsh",
         excerpt:
-          "14 logged Gong calls over 90 days. Key themes: concerns about historical data accuracy for alt asset classes, ESG integration interest via Sustainalytics, PitchBook private credit dataset demo request from Head of Fixed Income.",
+          "Field Superintendent maps to the 'Construction Field' Okta group. Provisioning this group grants M365, VPN, and Procore Safety access automatically. Procore Admin Rights require a separate Project Executive approval.",
       },
       {
         id: 3,
-        title: "Fidelity Engagement Tracker — 2025...",
-        subtitle: "SharePoint · CSM Team",
+        title: "Superintendent Day 1 Checklist — Phoenix DC",
+        subtitle: "SharePoint · Project Ops",
         iconUrl: `${GLEAN_IMG}/logos/sharepoint.svg`,
         iconFallback: null,
-        author: "Marcus Johnson",
+        author: "Kelsey Monroe",
         excerpt:
-          "Most recent call (Feb 12) flagged a potential churn risk — their data ops team is evaluating a Bloomberg terminal expansion for equity analytics. CSM escalation recommended.",
+          "Known blockers for Phoenix DC field hires: laptop lead time 5 business days, non-standard cost codes requiring manual Procore config, no standard ServiceNow template for field superintendent role.",
       },
       {
         id: 4,
-        title: "Cross-Sell Benchmarking — Inst. Accounts...",
-        subtitle: "Tableau · Revenue Ops",
-        iconUrl: `${GLEAN_IMG}/logos/tableau.svg`,
+        title: "Phoenix DC Onboarding Thread",
+        subtitle: "Teams · Phoenix DC Project",
+        iconUrl: `${GLEAN_IMG}/logos/microsoft-teams.svg`,
         iconFallback: null,
-        author: "Priya Mehta",
+        author: "Marcus Liu",
         excerpt:
-          "Based on comparable accounts (T. Rowe Price, Wellington), Fidelity's equity research usage pattern suggests strong fit for Morningstar Indexes licensing ($400K avg.) and Sustainalytics EU Taxonomy module.",
+          "Current 3-ticket provisioning process averages 4.2 days. A consolidated ServiceNow bundle with pre-populated approvers could reduce this to same-day for standard access items and trigger Okta group assignment automatically.",
       },
     ],
 
     followUpQuery:
-      "Draft a QBR agenda for the Fidelity Direct renewal in June",
+      "Generate a draft ServiceNow request bundle and approval checklist for the Phoenix DC superintendent onboarding",
 
     chatHistory: {
-      today: ["Account 360 — Fidelity..."],
+      today: ["New Hire Provisioning — Phoenix DC..."],
       recent: [
-        "Q1 Territory Planning — ...",
-        "PitchBook Cross-Sell An...",
-        "Gong Call Insights — Inst...",
-        "Renewal Forecast Q2 20...",
-        "Seismic Content Tracker...",
-        "Competitive Intel — Bloo...",
+        "Password Reset Trends — Q1...",
+        "Laptop Replacement Policy...",
+        "M365 Access Matrix...",
+        "VPN Troubleshooting Guide...",
+        "Software Approval Workflow...",
+        "Okta Group Audit — Field...",
       ],
     },
 
     showWork: {
       searchQuery:
-        "Fidelity Investments account contract opportunities call themes 2025",
+        "field superintendent onboarding provisioning Phoenix approvals",
       searching: [
         {
-          icon: `${GLEAN_IMG}/logos/salesforce.svg`,
+          icon: `${GLEAN_IMG}/logos/servicenow.svg`,
           iconFallback: null,
-          label: "Fidelity Investments — Salesforce Ac...",
+          label: "Field New Hire Provisioning SOP...",
         },
         {
-          icon: `${GLEAN_IMG}/logos/gong.svg`,
+          icon: `${GLEAN_IMG}/logos/okta.svg`,
           iconFallback: null,
-          label: "Gong Call Summary — Fidelity Q4...",
+          label: "Construction Roles Access Matrix...",
         },
         { icon: null, iconFallback: null, label: "+8 more" },
       ],
       reading: [
         {
-          icon: `${GLEAN_IMG}/logos/salesforce.svg`,
+          icon: `${GLEAN_IMG}/logos/servicenow.svg`,
           iconFallback: null,
-          label: "Fidelity Investments — Salesforce Ac...",
+          label: "Field New Hire Provisioning SOP...",
         },
         {
           icon: `${GLEAN_IMG}/logos/sharepoint.svg`,
           iconFallback: null,
-          label: "FI Renewal Playbook — 2025...",
+          label: "Superintendent Day 1 Checklist...",
         },
         {
-          icon: `${GLEAN_IMG}/logos/confluence3.svg`,
+          icon: `${GLEAN_IMG}/logos/microsoft-teams.svg`,
           iconFallback: null,
-          label: "Fidelity QBR Prep — Inst. Sales...",
+          label: "Phoenix DC Onboarding Thread...",
         },
       ],
       synthesizing: {
-        icon: `${GLEAN_IMG}/logos/confluence3.svg`,
+        icon: `${GLEAN_IMG}/logos/servicenow.svg`,
         iconFallback: null,
-        label: "Account 360 Summary",
-        note: "Cross-referencing 5 primary sources across Salesforce, Gong, SharePoint, and Tableau to compile a comprehensive account overview.",
+        label: "Provisioning Summary",
+        note: "Cross-referencing 4 primary sources across ServiceNow, Okta, SharePoint, and Teams to compile a complete provisioning and approval overview.",
       },
     },
   },
 
   /* ═══════════════════════════════════════════════════════
-   * FLOW 1 — Customer Support
+   * FLOW 1 — Project / Field Ops
    * ═══════════════════════════════════════════════════════ */
   {
-    id: "support",
+    id: "project",
     persona: {
-      title: "Customer Support",
-      subtitle: "Direct Support Representative",
+      title: "Project / Field Ops",
+      subtitle: "Project Manager / Superintendent",
     },
     greeting: "Good afternoon",
     userQuery:
-      "A Morningstar Direct client says their portfolio holdings and performance look wrong compared to their internal system. What are the likely root causes and what troubleshooting steps should I follow?",
+      "For Project Atlas, summarize the top schedule risks, open RFIs and submittals, and any recent field issues that could impact next week's owner update.",
 
-    aiResponse: `Here's a structured **troubleshooting guide** for portfolio data mismatch issues in Morningstar Direct:
+    aiResponse: `Here's your **Project Atlas risk summary** ahead of next week's owner update:
 
-**1. Verify Data Feed Timing**
-The most common root cause is a timing discrepancy between the client's custodian feed and Morningstar's data refresh cycle. Morningstar Direct refreshes portfolio holdings data at 6:00 AM CT for US equities and 11:00 PM CT for international securities. If the client is comparing mid-day, the data may not yet reflect overnight transactions. Ask the client when they last ran their internal reconciliation.¹
+**Top 3 Schedule Risks**
 
-**2. Check Portfolio Import Configuration**
-Confirm the client's portfolio is using the correct data feed mapping. Navigate to Portfolio → Settings → Import Configuration and verify:
-- Custodian ID mapping matches their internal system
-- Pricing source hierarchy is set correctly (default: Morningstar Pricing → Client Override → Custodian)
-- Corporate actions processing is enabled — missed stock splits or dividends are the #2 cause of performance drift²¹
+**1. Switchgear Submittal Lag — Critical Path Impact**
+The main switchgear submittal (ITO-E-0041) has been open for 47 days — 12 days past the contractual review cycle. Vendor Eaton has flagged a revised shop drawing resubmission date of March 21, putting energization of the Level 3 electrical room at risk by 18–22 days. This is the highest-priority item for owner discussion.¹²
 
-**3. Run Reconciliation**
-Run the Holdings Reconciliation Report (Portfolio → Reports → Reconciliation) to identify specific securities with variances. Cross-reference against the Known Data Issues log — there is a currently tracked issue (JIRA DQ-4821) affecting historical NAV data for certain money market funds posted after the Jan 2025 data migration. If variances exceed 1bp on performance, escalate to L2 with the reconciliation export attached.³
+**2. Unresolved Structural Penetration RFIs**
+Three RFIs (RFI-0187, RFI-0188, RFI-0193) on the Level 4 mechanical deck are awaiting A/E response at 9, 11, and 14 days respectively. Mechanical subcontractor Limbach has flagged that the Level 4 slab pour cannot proceed until RFI-0188 is resolved. Estimated schedule impact: 5–8 days if not addressed by Friday.¹
 
-**4. Root Causes by Frequency**
-- Timing lag on custodian feeds — 42% of cases
-- Incorrect benchmark assignment — 23% of cases
-- Missing corporate actions — 18% of cases
-- Calculation methodology differences (gross vs. net, geometric vs. arithmetic) — 12%⁴
+**3. Weather-Driven Concrete Resequencing**
+Forecasted precipitation the week of March 17 conflicts with the planned Level 5 deck pour. The superintendent has requested resequencing to pour Level 3 south bay first — but this requires a temporary crane relocation not yet approved by the project executive.³
 
-Would you like me to draft a client-facing email explaining the data refresh schedule, or escalate this to the Data Quality team?`,
+**What Needs a Decision This Week**
+- Release the alternate penetration detail for RFI-0188 (A/E action)
+- Approve the temporary crane resequencing plan (Project Executive action)
+- Escalate the Eaton switchgear commitment date to procurement (PM action)²
+
+**Owner-Ready Summary**
+The project remains on schedule overall with three items requiring near-term resolution. The team is actively managing switchgear delivery coordination, structural detail clarifications, and weather contingency planning. No change orders are anticipated at this time, and the current substantial completion date of October 14 is intact pending this week's decisions.¹²
+
+Would you like me to draft the owner update email based on this summary?`,
 
     sources: [
       {
         id: 1,
-        title: "Direct Support — Portfolio Reconciliation SOP",
-        subtitle: "Confluence · Product Support",
-        iconUrl: `${GLEAN_IMG}/logos/confluence3.svg`,
-        iconFallback: null,
-        author: "Jennifer Walsh",
+        title: "Project Atlas — RFI Log",
+        subtitle: "Procore · Project Atlas",
+        iconUrl: null,
+        iconFallback: PROCORE,
+        author: "Procore · Field Ops",
         excerpt:
-          "Morningstar Direct refreshes portfolio holdings data at 6:00 AM CT for US equities and 11:00 PM CT for international securities. Timing discrepancy with custodian feeds is the #1 root cause of data mismatch tickets (42% of cases).",
+          "RFI-0187, RFI-0188, RFI-0193 open on Level 4 mechanical deck at 9, 11, and 14 days. Limbach flagged Level 4 slab pour cannot proceed until RFI-0188 is resolved. Estimated impact: 5–8 days.",
       },
       {
         id: 2,
-        title: "Portfolio Import Config Guide v4.2",
-        subtitle: "SharePoint · Client Services",
-        iconUrl: `${GLEAN_IMG}/logos/sharepoint.svg`,
-        iconFallback: null,
-        author: "David Kim",
+        title: "Project Atlas — Submittal Register",
+        subtitle: "Procore · Project Atlas",
+        iconUrl: null,
+        iconFallback: PROCORE,
+        author: "Procore · Field Ops",
         excerpt:
-          "Confirm custodian ID mapping, pricing source hierarchy (Morningstar Pricing → Client Override → Custodian), and corporate actions processing. Missed stock splits or dividends are the #2 cause of performance drift.",
+          "Switchgear submittal ITO-E-0041 open 47 days, 12 days past contractual cycle. Eaton resubmission date revised to March 21. Level 3 electrical room energization at risk by 18–22 days.",
       },
       {
         id: 3,
-        title: "Known Data Issues — Q1 2025 Tracker",
-        subtitle: "Jira · Data Quality",
-        iconUrl: `${GLEAN_IMG}/logos/jira3.svg`,
+        title: "Atlas OAC Coordination Thread",
+        subtitle: "Teams · Atlas Project Team",
+        iconUrl: `${GLEAN_IMG}/logos/microsoft-teams.svg`,
         iconFallback: null,
-        author: "Anita Patel",
+        author: "Sarah Okonkwo",
         excerpt:
-          "Currently tracked issue (JIRA DQ-4821) affecting historical NAV data for certain money market funds posted after the Jan 2025 data migration. If variances exceed 1bp, escalate to L2.",
+          "Superintendent requested resequencing to Level 3 south bay pour due to March 17 weather forecast. Temporary crane relocation required — project executive approval pending.",
       },
       {
         id: 4,
-        title: "Support Case Analytics — Root Cause Report",
-        subtitle: "ServiceNow · Support Ops",
-        iconUrl: `${GLEAN_IMG}/logos/servicenow.svg`,
+        title: "Owner Update Notes — March 6",
+        subtitle: "Outlook · Project Atlas",
+        iconUrl: `${GLEAN_IMG}/logos/outlook.svg`,
         iconFallback: null,
-        author: "Operations Analytics",
+        author: "James Whitfield",
         excerpt:
-          "Root causes by frequency: timing lag on custodian feeds (42%), incorrect benchmark assignment (23%), missing corporate actions (18%), calculation methodology differences (12%).",
+          "Substantial completion date October 14 remains intact. No change orders anticipated at this time. Switchgear, RFI-0188, and crane resequencing are the three items requiring owner awareness this cycle.",
       },
     ],
 
     followUpQuery:
-      "Draft a client email explaining the data refresh schedule and known NAV issue",
+      "Draft the owner update email for the Project Atlas OAC meeting next Thursday",
 
     chatHistory: {
-      today: ["Portfolio Data Mismatch..."],
+      today: ["Project Atlas Risk Summary..."],
       recent: [
-        "Morningstar Direct API D...",
-        "Case Escalation Workflo...",
-        "Historical Data Retrieval...",
-        "Custom Benchmark Conf...",
-        "L2 Handoff Procedures...",
-        "Known Issues Tracker — ...",
+        "Open RFIs — Level 3 Mech...",
+        "Submittal Delays — Switchgear...",
+        "Safety Walk Notes — Week 10...",
+        "Owner Update Draft...",
+        "Concrete Pour Issues...",
+        "Lakeview Compute — Schedule...",
       ],
     },
 
     showWork: {
       searchQuery:
-        "Morningstar Direct portfolio data mismatch troubleshooting 2025",
+        "Project Atlas schedule risks RFI submittal field issues",
       searching: [
         {
-          icon: `${GLEAN_IMG}/logos/confluence3.svg`,
-          iconFallback: null,
-          label: "Direct Support — Portfolio Reco...",
+          icon: null,
+          iconFallback: PROCORE,
+          label: "Project Atlas — RFI Log...",
         },
         {
-          icon: `${GLEAN_IMG}/logos/sharepoint.svg`,
-          iconFallback: null,
-          label: "Data Reconciliation SOP — Q1...",
-        },
-        { icon: null, iconFallback: null, label: "+6 more" },
-      ],
-      reading: [
-        {
-          icon: `${GLEAN_IMG}/logos/confluence3.svg`,
-          iconFallback: null,
-          label: "Direct Support — Portfolio Reco...",
-        },
-        {
-          icon: `${GLEAN_IMG}/logos/sharepoint.svg`,
-          iconFallback: null,
-          label: "Portfolio Data Quality Checkl...",
-        },
-        {
-          icon: `${GLEAN_IMG}/logos/jira3.svg`,
-          iconFallback: null,
-          label: "Known Issues — Direct v4.2...",
-        },
-      ],
-      synthesizing: {
-        icon: `${GLEAN_IMG}/logos/confluence3.svg`,
-        iconFallback: null,
-        label: "Support Resolution Guide",
-        note: "Cross-referencing 4 primary sources across Confluence, SharePoint, and Jira to compile a comprehensive troubleshooting guide.",
-      },
-    },
-  },
-
-  /* ═══════════════════════════════════════════════════════
-   * FLOW 2 — Product / Developer
-   * ═══════════════════════════════════════════════════════ */
-  {
-    id: "product",
-    persona: {
-      title: "Product / Developer",
-      subtitle: "Data Collections Analyst",
-    },
-    greeting: "Good afternoon",
-    userQuery:
-      "What is the documented SOP for handling special case prospectuses in Data Collections, specifically for multi-share-class mutual funds with non-standard fee structures?",
-
-    aiResponse: `Here's the documented **SOP for special case prospectuses** in Data Collections, focused on multi-share-class mutual funds with non-standard fee structures:
-
-**1. Initial Classification**
-When a prospectus is received for a multi-share-class fund, check the Fund Classification Matrix (DC-SOP-2024-041) to determine if it qualifies as "special case." A prospectus is special-case if any of the following apply:
-- More than 6 share classes with distinct fee schedules
-- Contains contingent deferred sales charges (CDSC) with variable decay schedules
-- Includes performance-based fee adjustments (fulcrum fees)
-- Has institutional share classes with negotiated management fees not published in the prospectus¹
-
-**2. Data Entry Workflow**
-For qualifying special-case prospectuses:
-- Tag the document in the intake queue with label SC-MULTICLASS
-- Pull the fee schedule template from SharePoint (Templates → Fee Structures → Multi-Class) and populate each share class row independently
-- Cross-validate fee data against the SEC EDGAR N-1A filing — internal QA found a **14% discrepancy rate** between prospectus PDFs and EDGAR filings in Q3 2024
-- If the CDSC schedule uses a non-standard decay period (anything other than 1/3/5/7-year), flag in Jira under DQ-FeeException with severity "Medium"²³
-
-**3. Known Exceptions**
-The Exception Handling Guide (DC-EXC-2024-009) documents 23 active fund families with recurring special-case patterns:
-- **American Funds** — Class R shares have 6 sub-variants (R-1 through R-6) each requiring independent fee entry
-- **PIMCO Institutional** — Negotiated fee waivers require manual override of the standard fee import pipeline
-- **Vanguard Admiral/Investor** — Minimum investment thresholds impact fee tier assignment logic¹³
-
-If the fund family is not in the exception guide, escalate to the Senior Data Analyst on rotation via the #data-collections-escalation Teams channel.`,
-
-    sources: [
-      {
-        id: 1,
-        title: "Data Collections — Special Case SOP",
-        subtitle: "Confluence · Data Collections",
-        iconUrl: `${GLEAN_IMG}/logos/confluence3.svg`,
-        iconFallback: null,
-        author: "Maria Chen",
-        excerpt:
-          "Check the Fund Classification Matrix (DC-SOP-2024-041). Special-case if: >6 share classes, CDSC with variable decay, fulcrum fees, or unpublished negotiated institutional fees.",
-      },
-      {
-        id: 2,
-        title: "Fee Structure QA Audit — Q3 2024",
-        subtitle: "SharePoint · Data Quality",
-        iconUrl: `${GLEAN_IMG}/logos/sharepoint.svg`,
-        iconFallback: null,
-        author: "Tom Brennan",
-        excerpt:
-          "Cross-validate fee data against SEC EDGAR N-1A filing. Internal QA found a 14% discrepancy rate between prospectus PDFs and EDGAR filings in Q3 2024.",
-      },
-      {
-        id: 3,
-        title: "Exception Handling Guide — Fund Families",
-        subtitle: "Jira · Data Collections",
-        iconUrl: `${GLEAN_IMG}/logos/jira3.svg`,
-        iconFallback: null,
-        author: "Sarah Liu",
-        excerpt:
-          "23 active fund families with recurring special-case patterns documented. American Funds Class R shares require independent fee entry for 6 sub-variants (R-1 through R-6).",
-      },
-    ],
-
-    followUpQuery:
-      "Show me the Jira backlog for the prospectus parsing pipeline improvements",
-
-    chatHistory: {
-      today: ["Special Case Prospectus..."],
-      recent: [
-        "Data Collections SOP Mi...",
-        "Prospectus Parsing Pipeli...",
-        "AWS Data Lake Schema D...",
-        "API Rate Limiting — Portfo...",
-        "Jira Sprint Retro — DC Te...",
-        "Fee Structure Exceptions...",
-      ],
-    },
-
-    showWork: {
-      searchQuery:
-        "Data Collections SOP special case prospectus multi-share-class fee",
-      searching: [
-        {
-          icon: `${GLEAN_IMG}/logos/confluence3.svg`,
-          iconFallback: null,
-          label: "Data Collections — Special Ca...",
-        },
-        {
-          icon: `${GLEAN_IMG}/logos/confluence3.svg`,
-          iconFallback: null,
-          label: "Prospectus Processing SOP —...",
-        },
-        { icon: null, iconFallback: null, label: "+5 more" },
-      ],
-      reading: [
-        {
-          icon: `${GLEAN_IMG}/logos/confluence3.svg`,
-          iconFallback: null,
-          label: "Data Collections — Special Ca...",
-        },
-        {
-          icon: `${GLEAN_IMG}/logos/sharepoint.svg`,
-          iconFallback: null,
-          label: "Multi-Class Fund Handling Pr...",
-        },
-        {
-          icon: `${GLEAN_IMG}/logos/jira3.svg`,
-          iconFallback: null,
-          label: "Fee Structure Exception Log...",
-        },
-      ],
-      synthesizing: {
-        icon: `${GLEAN_IMG}/logos/confluence3.svg`,
-        iconFallback: null,
-        label: "SOP Documentation",
-        note: "Cross-referencing 3 primary sources across Confluence and Jira to compile the relevant SOP documentation.",
-      },
-    },
-  },
-
-  /* ═══════════════════════════════════════════════════════
-   * FLOW 3 — Finance
-   * ═══════════════════════════════════════════════════════ */
-  {
-    id: "finance",
-    persona: {
-      title: "Finance",
-      subtitle: "FP&A Analyst",
-    },
-    greeting: "Good afternoon",
-    userQuery:
-      "Summarize our Q4 2025 revenue performance by business segment and flag any material variances against the operating plan that exceed 5%",
-
-    aiResponse: `Here's the **Q4 2025 revenue performance summary** by business segment with variances against the operating plan:
-
-| Segment | Q4 Actual | Q4 Plan | Variance | Var % | Flag |
-|---------|-----------|---------|----------|-------|------|
-| Morningstar Data & Analytics | $412.3M | $398.0M | +$14.3M | +3.6% | — |
-| PitchBook | $189.7M | $176.5M | +$13.2M | +7.5% | ⚠ |
-| Morningstar Wealth | $54.1M | $61.8M | -$7.7M | -12.5% | 🔴 |
-| Morningstar Retirement | $31.2M | $29.4M | +$1.8M | +6.1% | ⚠ |
-| Morningstar Indexes | $68.9M | $64.2M | +$4.7M | +7.3% | ⚠ |
-| Sustainalytics | $48.6M | $50.1M | -$1.5M | -3.0% | — |
-| **Total** | **$804.8M** | **$780.0M** | **+$24.8M** | **+3.2%** | — |
-
-**Material Variances (>5%):**
-
-**1. PitchBook (+7.5% / +$13.2M)**
-Driven by accelerated enterprise license adoption in private equity. 38 new enterprise logos closed in Q4 vs. 26 planned, with average deal size increasing 12% to $142K ARR. The LCD (Leveraged Commentary & Data) add-on contributed $4.1M above plan.¹²
-
-**2. Morningstar Wealth (-12.5% / -$7.7M)**
-Primary driver is lower-than-expected AUM-linked fee revenue due to net outflows of $2.8B from turnkey asset management portfolios (TAMP) in October–November, concentrated in the advisor channel. The Q4 market correction also compressed basis-point revenue by approximately $3.2M. Investment management is revising Q1 2026 forecast downward by 8%.³²
-
-**3. Morningstar Retirement (+6.1% / +$1.8M)**
-Positive variance from higher-than-expected plan participant growth (+4.2% QoQ) in the mid-market managed accounts segment.²
-
-**4. Morningstar Indexes (+7.3% / +$4.7M)**
-Strong index licensing fees — $2.9M from new ETF product launches by third-party issuers tracking Morningstar-proprietary indexes, and $1.8M from expanded Morningstar US Market Index licensing with a major asset manager.¹⁴
-
-Would you like me to pull the full segment P&L detail, or generate a variance commentary draft for the board presentation?`,
-
-    sources: [
-      {
-        id: 1,
-        title: "Q4 2025 Revenue Summary — Consolidated",
-        subtitle: "SharePoint · FP&A",
-        iconUrl: `${GLEAN_IMG}/logos/sharepoint.svg`,
-        iconFallback: null,
-        author: "Christine Park",
-        excerpt:
-          "Total Q4 revenue: $804.8M vs. $780.0M plan (+3.2%). PitchBook and Indexes segments drove the upside; Wealth segment underperformed due to AUM-linked fee compression.",
-      },
-      {
-        id: 2,
-        title: "FY2025 Operating Plan — Segment Targets",
-        subtitle: "SharePoint · Finance",
-        iconUrl: `${GLEAN_IMG}/logos/sharepoint.svg`,
-        iconFallback: null,
-        author: "James Thornton",
-        excerpt:
-          "PitchBook: 38 new enterprise logos vs. 26 planned. Average deal size up 12% to $142K ARR. LCD add-on contributed $4.1M above plan.",
-      },
-      {
-        id: 3,
-        title: "Wealth Segment AUM Report — Q4 2025",
-        subtitle: "Tableau · Investment Mgmt",
-        iconUrl: `${GLEAN_IMG}/logos/tableau.svg`,
-        iconFallback: null,
-        author: "Michael Rivera",
-        excerpt:
-          "Net outflows of $2.8B from TAMP in Oct–Nov, concentrated in advisor channel. Q4 market correction compressed basis-point revenue by ~$3.2M. Q1 2026 forecast revised down 8%.",
-      },
-      {
-        id: 4,
-        title: "Index Licensing Pipeline — Q4 Close",
-        subtitle: "Salesforce · Index Solutions",
-        iconUrl: `${GLEAN_IMG}/logos/salesforce.svg`,
-        iconFallback: null,
-        author: "Amy Nakamura",
-        excerpt:
-          "Strong index licensing fees — $2.9M from new ETF product launches tracking Morningstar indexes, $1.8M from expanded US Market Index licensing.",
-      },
-    ],
-
-    followUpQuery:
-      "Generate a variance commentary draft for the board presentation",
-
-    chatHistory: {
-      today: ["Q4 Revenue Variance A..."],
-      recent: [
-        "Segment P&L Rollup — F...",
-        "License Revenue Recogni...",
-        "PitchBook ARR Tracking...",
-        "FY2025 Budget vs Actual...",
-        "Cost Allocation Model — ...",
-        "Board Deck — Prelim FY...",
-      ],
-    },
-
-    showWork: {
-      searchQuery:
-        "Q4 2025 revenue segment performance variance operating plan",
-      searching: [
-        {
-          icon: `${GLEAN_IMG}/logos/sharepoint.svg`,
-          iconFallback: null,
-          label: "Q4 2025 Revenue Summary —...",
-        },
-        {
-          icon: `${GLEAN_IMG}/logos/sharepoint.svg`,
-          iconFallback: null,
-          label: "FY2025 Operating Plan — Seg...",
+          icon: null,
+          iconFallback: PROCORE,
+          label: "Project Atlas — Submittal Register...",
         },
         { icon: null, iconFallback: null, label: "+7 more" },
       ],
       reading: [
         {
-          icon: `${GLEAN_IMG}/logos/sharepoint.svg`,
-          iconFallback: null,
-          label: "Q4 2025 Revenue Summary —...",
+          icon: null,
+          iconFallback: PROCORE,
+          label: "Project Atlas — RFI Log...",
         },
         {
-          icon: `${GLEAN_IMG}/logos/tableau.svg`,
-          iconFallback: null,
-          label: "Segment P&L — Q4 Close...",
+          icon: null,
+          iconFallback: PROCORE,
+          label: "Project Atlas — Submittal Register...",
         },
+        {
+          icon: `${GLEAN_IMG}/logos/microsoft-teams.svg`,
+          iconFallback: null,
+          label: "Atlas OAC Coordination Thread...",
+        },
+      ],
+      synthesizing: {
+        icon: null,
+        iconFallback: PROCORE,
+        label: "Project Risk Summary",
+        note: "Cross-referencing 4 primary sources across Procore, Teams, and Outlook to compile a complete project risk and owner update brief.",
+      },
+    },
+  },
+
+  /* ═══════════════════════════════════════════════════════
+   * FLOW 2 — Preconstruction / Business Development
+   * ═══════════════════════════════════════════════════════ */
+  {
+    id: "preconstruction",
+    persona: {
+      title: "Preconstruction / Biz Dev",
+      subtitle: "Pursuit Lead / Preconstruction Director",
+    },
+    greeting: "Good afternoon",
+    userQuery:
+      "Help me prepare for a pursuit review on a new hyperscale data center opportunity: summarize the client, similar Clayco projects, likely differentiators, and the biggest proposal risks.",
+
+    aiResponse: `Here's your **pursuit brief** for the hyperscale data center opportunity:
+
+**Client Snapshot**
+The client is a Tier 1 hyperscale operator expanding their US compute footprint with three new campuses planned over 36 months. They are evaluating design-build contractors with demonstrated speed-to-power capability and mission-critical self-perform MEP. The RFP emphasizes schedule certainty above cost, and the client has explicitly referenced a competitor's cost overruns on a prior campus as a key disqualifying factor in their evaluation criteria.¹²
+
+**Most Relevant Prior Clayco Work**
+- **Lakeview Compute Center** (240 MW, delivered 2023) — 14 months from GMP to energization, beat schedule by 22 days. Key proof point: self-perform electrical reduced switchgear coordination risk and eliminated one layer of subcontractor interface.³
+- **Phoenix DC Campus** (currently active, 180 MW) — demonstrates live hyperscale execution capacity and familiarity with phased commissioning and utility coordination at scale.
+- **Project Nova** (comparable MEP complexity, 2022) — structural steel self-perform reduced schedule by 6 weeks vs. a traditional sub model on a similar footprint.¹
+
+**Likely Differentiators**
+- **Speed-to-site**: The Clayco Compute business unit provides dedicated preconstruction and procurement resources not available through traditional general contractors
+- **Integrated delivery**: Design-build structure eliminates A/E coordination lag that adds 4–8 weeks on comparable pursuits
+- **Self-perform MEP**: Reduces subcontractor dependency on long-lead electrical gear — the #1 schedule driver for hyperscale
+- **Mission-critical portfolio**: Six active or recently delivered data center campuses across the Midwest and Southwest¹
+
+**Biggest Proposal Risks**
+- **Utility coordination**: Campus power delivery is contingent on a utility substation upgrade with a timeline not yet confirmed; GMP assumptions should explicitly address this risk²
+- **Procurement long-leads**: Switchgear and transformer lead times are currently 52–65 weeks — early procurement language and cost escalation clauses are essential
+- **Schedule guarantee language**: The client is sensitized to missed commitments; any schedule guarantee requires executive sign-off before proposal submission
+- **Labor assumptions**: The Phoenix/Chandler market has tightening craft availability for electricians and ironworkers entering 2026²⁴
+
+Would you like me to build an exec prep one-pager for the pursuit review meeting?`,
+
+    sources: [
+      {
+        id: 1,
+        title: "Mission Critical Pursuit Archive",
+        subtitle: "SharePoint · Preconstruction",
+        iconUrl: `${GLEAN_IMG}/logos/sharepoint.svg`,
+        iconFallback: null,
+        author: "Tara Nguyen",
+        excerpt:
+          "Lakeview Compute Center: 240 MW delivered 2023, beat schedule by 22 days. Self-perform electrical eliminated one subcontractor interface layer. Project Nova: self-perform structural steel saved 6 weeks vs. sub model.",
+      },
+      {
+        id: 2,
+        title: "Similar Delivered Projects — Data Center",
+        subtitle: "Procore · Portfolio",
+        iconUrl: null,
+        iconFallback: PROCORE,
+        author: "Procore · Preconstruction",
+        excerpt:
+          "Phoenix DC Campus active at 180 MW. Lakeview Compute Center closed 2023. Client evaluation criteria emphasize schedule certainty; competitor cost overruns on prior campus are an explicit disqualifier in RFP scoring.",
+      },
+      {
+        id: 3,
+        title: "Compute Pursuit War Room",
+        subtitle: "Teams · Clayco Compute",
+        iconUrl: `${GLEAN_IMG}/logos/microsoft-teams.svg`,
+        iconFallback: null,
+        author: "Derek Solano",
+        excerpt:
+          "Biggest proposal risks flagged by preconstruction: utility substation upgrade timeline unconfirmed, switchgear lead times 52–65 weeks, Phoenix craft labor tightening. Schedule guarantee language needs exec review.",
+      },
+      {
+        id: 4,
+        title: "Hyperscale Market Update — Q1 2026",
+        subtitle: "Web · Market Research",
+        iconUrl: `${GLEAN_IMG}/feather/globe.svg`,
+        iconFallback: null,
+        author: "Web Search",
+        excerpt:
+          "Tier 1 hyperscale operators are accelerating US data center build-out in 2026, driven by AI compute demand. Speed-to-power and self-perform MEP are the top contractor selection criteria across recent procurements.",
+      },
+    ],
+
+    followUpQuery:
+      "Build an exec prep one-pager for the hyperscale data center pursuit review",
+
+    chatHistory: {
+      today: ["Hyperscale Pursuit Brief..."],
+      recent: [
+        "Similar Wins — Mission Critical...",
+        "Proposal Boilerplate — Data Center...",
+        "Competitive Intel — DPR / Turner...",
+        "Client Meeting Notes...",
+        "Past GMP Lessons Learned...",
+        "Lakeview Compute — Final RFP...",
+      ],
+    },
+
+    showWork: {
+      searchQuery:
+        "hyperscale data center pursuit similar projects differentiators risks",
+      searching: [
         {
           icon: `${GLEAN_IMG}/logos/sharepoint.svg`,
           iconFallback: null,
-          label: "Board Deck — FY2025 Prelim...",
+          label: "Mission Critical Pursuit Archive...",
+        },
+        {
+          icon: null,
+          iconFallback: PROCORE,
+          label: "Similar Delivered Projects — DC...",
+        },
+        { icon: null, iconFallback: null, label: "+5 more" },
+      ],
+      reading: [
+        {
+          icon: `${GLEAN_IMG}/logos/sharepoint.svg`,
+          iconFallback: null,
+          label: "Mission Critical Pursuit Archive...",
+        },
+        {
+          icon: null,
+          iconFallback: PROCORE,
+          label: "Similar Delivered Projects — DC...",
+        },
+        {
+          icon: `${GLEAN_IMG}/feather/globe.svg`,
+          iconFallback: null,
+          label: "Hyperscale Market Update — Q1...",
         },
       ],
       synthesizing: {
         icon: `${GLEAN_IMG}/logos/sharepoint.svg`,
         iconFallback: null,
-        label: "Revenue Performance Summary",
-        note: "Cross-referencing 4 primary sources across SharePoint, Tableau, and Workday to compile a comprehensive revenue performance summary.",
+        label: "Pursuit Brief",
+        note: "Cross-referencing 4 primary sources across SharePoint, Procore, Teams, and web search to compile a pursuit brief with client context, comparable projects, and risk flags.",
+      },
+    },
+  },
+
+  /* ═══════════════════════════════════════════════════════
+   * FLOW 3 — Executive / Innovation
+   * ═══════════════════════════════════════════════════════ */
+  {
+    id: "executive",
+    persona: {
+      title: "Executive / Innovation",
+      subtitle: "CIO / VP Innovation",
+    },
+    greeting: "Good afternoon",
+    userQuery:
+      "Across IT and project delivery, where are we losing the most time today, and what are the first three Glean agents we should launch in the next 30 days to create visible wins?",
+
+    aiResponse: `Here's your **cross-functional AI opportunity analysis** across IT and project delivery:
+
+**Where Clayco Is Losing the Most Time Today**
+
+**1. L1 IT Questions & Ticket Volume**
+ServiceNow analytics show 1,847 tickets in the past 90 days were resolvable with a documented SOP — 62% of total L1 volume. Average resolution time is 4.1 hours despite existing documentation. Top categories: password resets (23%), software access requests (19%), VPN troubleshooting (14%), and new hire provisioning (11%). None of these require human judgment to resolve.¹
+
+**2. Fragmented Project Knowledge**
+Across the active portfolio, project managers report spending an average of 2.3 hours per week reconstructing context that already exists in Procore, Teams, and Outlook — primarily for owner update prep, RFI and submittal status, and risk identification. There is no aggregation layer; every PM rebuilds their own summary manually each cycle.²
+
+**3. Repetitive Owner & Proposal Drafting**
+Preconstruction and field teams are rewriting versions of the same 4–5 document types (owner update emails, GMP letters, RFP response boilerplate, daily field reports) from scratch on every project. SharePoint analysis shows 80%+ content overlap between documents of the same type across projects.³
+
+**First 3 Glean Agents to Launch**
+
+| Agent | Target User | Est. Time Saved | Launch Window |
+|-------|-------------|-----------------|---------------|
+| IT Provisioning Copilot | Helpdesk / IT Director | 12–18 hrs/week | Week 1–2 |
+| Project Risk Recap Copilot | Project Managers | 8–12 hrs/week | Week 3–4 |
+| Pursuit Brief Copilot | Preconstruction / BD | 6–10 hrs/week | Week 5–6 |
+
+**Rollout Plan**
+IT first — fastest ROI, lowest change management lift, and visible ticket deflection metrics within 2 weeks. PM pilot second — 3 project teams, measure hours saved on owner update prep and RFI status aggregation. Exec recap third — positions Glean as the operating system for leadership visibility across the portfolio.⁴
+
+**Success Measures**
+- Ticket deflection rate: target 40% L1 resolution without human intervention within 60 days
+- PM context-building time: target 50% reduction by end of PM pilot
+- Proposal reuse rate: target 3× increase in boilerplate reuse within first quarter¹⁴
+
+Would you like me to draft the Glean pilot launch plan and 30-day success scorecard?`,
+
+    sources: [
+      {
+        id: 1,
+        title: "Ticket Theme Dashboard — Q1 2026",
+        subtitle: "ServiceNow · IT Analytics",
+        iconUrl: `${GLEAN_IMG}/logos/servicenow.svg`,
+        iconFallback: null,
+        author: "Operations Analytics",
+        excerpt:
+          "1,847 L1 tickets in 90 days resolvable via SOP (62% of total). Average resolution: 4.1 hours. Top categories: password resets 23%, software access 19%, VPN 14%, new hire provisioning 11%.",
+      },
+      {
+        id: 2,
+        title: "Portfolio Issue Summary — Active Projects",
+        subtitle: "Procore · Portfolio View",
+        iconUrl: null,
+        iconFallback: PROCORE,
+        author: "Procore · Analytics",
+        excerpt:
+          "PMs average 2.3 hours/week reconstructing context from Procore, Teams, and Outlook for owner updates and risk identification. No aggregation layer exists; every PM rebuilds manually each cycle.",
+      },
+      {
+        id: 3,
+        title: "AI Steering Committee Notes — Feb 2026",
+        subtitle: "Teams · AI Steering Committee",
+        iconUrl: `${GLEAN_IMG}/logos/microsoft-teams.svg`,
+        iconFallback: null,
+        author: "CIO Office",
+        excerpt:
+          "Preconstruction and field teams rewrite the same 4–5 document types from scratch on every project. SharePoint analysis shows 80%+ content overlap across same-type documents. Three pilot agents proposed: IT provisioning, project risk recap, pursuit brief.",
+      },
+      {
+        id: 4,
+        title: "Onboarding & SOP Collection — All Depts",
+        subtitle: "SharePoint · Knowledge Management",
+        iconUrl: `${GLEAN_IMG}/logos/sharepoint.svg`,
+        iconFallback: null,
+        author: "Kelsey Monroe",
+        excerpt:
+          "Target success measures: 40% L1 deflection within 60 days, 50% reduction in PM context-building time, 3× increase in proposal boilerplate reuse within Q1 of rollout.",
+      },
+    ],
+
+    followUpQuery:
+      "Draft the Glean pilot launch plan and 30-day success scorecard",
+
+    chatHistory: {
+      today: ["30-Day AI Wins..."],
+      recent: [
+        "Ticket Theme Analysis...",
+        "Project Delivery Friction Points...",
+        "Meeting Recap — AI Steering...",
+        "New Hire Ramp Issues...",
+        "Knowledge Gaps by Department...",
+        "Clayco Compute — AI Strategy...",
+      ],
+    },
+
+    showWork: {
+      searchQuery:
+        "time loss IT project delivery repetitive work pilot 30 day wins",
+      searching: [
+        {
+          icon: `${GLEAN_IMG}/logos/servicenow.svg`,
+          iconFallback: null,
+          label: "Ticket Theme Dashboard — Q1...",
+        },
+        {
+          icon: null,
+          iconFallback: PROCORE,
+          label: "Portfolio Issue Summary — Active...",
+        },
+        { icon: null, iconFallback: null, label: "+7 more" },
+      ],
+      reading: [
+        {
+          icon: `${GLEAN_IMG}/logos/servicenow.svg`,
+          iconFallback: null,
+          label: "Ticket Theme Dashboard — Q1...",
+        },
+        {
+          icon: null,
+          iconFallback: PROCORE,
+          label: "Portfolio Issue Summary — Active...",
+        },
+        {
+          icon: `${GLEAN_IMG}/logos/microsoft-teams.svg`,
+          iconFallback: null,
+          label: "AI Steering Committee Notes...",
+        },
+      ],
+      synthesizing: {
+        icon: `${GLEAN_IMG}/logos/servicenow.svg`,
+        iconFallback: null,
+        label: "Executive Rollout Recommendation",
+        note: "Cross-referencing 4 primary sources across ServiceNow, Procore, Teams, and SharePoint to compile a cross-functional time-loss analysis and agent prioritization recommendation.",
       },
     },
   },

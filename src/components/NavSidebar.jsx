@@ -92,7 +92,7 @@ export default function NavSidebar({ activeView = "home" }) {
         ))}
         {/* User avatar */}
         <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center mt-1">
-          <span className="text-white text-xs font-semibold">S</span>
+          <span className="text-white text-xs font-semibold">J</span>
         </div>
       </div>
 

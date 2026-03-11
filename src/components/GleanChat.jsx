@@ -110,7 +110,7 @@ const CALLOUTS = [
     arrowAlign: "left",
   },
   {
-    text: "In a live environment, these open directly in Confluence, Jira, SharePoint — wherever the doc lives.",
+    text: "In a live environment, these open directly in Procore, SharePoint, ServiceNow — wherever the doc lives.",
     arrowSide: "top",
     arrowAlign: "left",
   },
@@ -498,7 +498,7 @@ export default function GleanChat({ flow, onRestart }) {
 
             {/* Footer */}
             <p className="text-[11px] text-gray-400 text-center mt-2 sm:mt-3 pb-2">
-              Prepared for Morningstar by the Glean team
+              Prepared for Clayco by the Glean team
             </p>
           </div>
         </div>
