@@ -25,15 +25,15 @@ const MaskedIcon = ({ src, size = 20, color = "#1C5BE0" }) => (
 const bullets = [
   {
     icon: `${GLEAN_IMG}/feather/search.svg`,
-    text: "Accelerate OneTru AI Assist — unify 45+ enterprise systems (Workday, Coupa, Jira, Confluence, Remedy, Salesforce, Outlook, SharePoint and more) behind a single, secure AI layer",
+    text: "Accelerate high-value use cases already on TransUnion's roadmap — from governed analytics and fraud/risk workflows to service operations and field enablement",
   },
   {
     icon: `${GLEAN_IMG}/lightbulb-3.svg`,
-    text: "Trusted answers across TU's knowledge — Glean grounds every response in your architecture docs, tickets, policies, and runbooks, with citations and deep links back to the source",
+    text: "Turn siloed internal knowledge into trusted answers grounded in docs, tickets, decks, LMS content, and call recordings",
   },
   {
     icon: `${GLEAN_IMG}/feather/lock.svg`,
-    text: "Built for regulated data — enterprise-grade security, permission-aware by default, aligned with TransUnion's risk and compliance posture",
+    text: "Support AI adoption in a regulated environment with permission-aware access, citations, and auditable reasoning",
   },
 ];
 

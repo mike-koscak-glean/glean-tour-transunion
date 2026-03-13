@@ -3,301 +3,289 @@ const GLEAN_IMG = "https://app.glean.com/images";
 const CONFLUENCE_ICON = `${GLEAN_IMG}/logos/confluence.svg`;
 const SHAREPOINT_ICON = `${GLEAN_IMG}/logos/sharepoint.svg`;
 const JIRA_ICON = `${GLEAN_IMG}/logos/jira.svg`;
-const OUTLOOK_ICON = `${GLEAN_IMG}/logos/outlook.svg`;
+const GLOBE_ICON = `${GLEAN_IMG}/feather/globe.svg`;
 
-const REMEDY_FALLBACK = { letter: "R", color: "#B22222" };
-const WORKDAY_FALLBACK = { letter: "W", color: "#0070D1" };
+const PPT_FALLBACK = { letter: "P", color: "#D83B01" };
+const TABLEAU_FALLBACK = { letter: "T", color: "#E97627" };
+const SALESFORCE_FALLBACK = { letter: "S", color: "#00A1E0" };
 const GONG_FALLBACK = { letter: "G", color: "#9B51E0" };
 const LMS_FALLBACK = { letter: "L", color: "#1A6EAD" };
-const PDF_FALLBACK = { letter: "P", color: "#D93025" };
 const GRC_FALLBACK = { letter: "G", color: "#CC0000" };
 
 export const flows = [
   /* ═══════════════════════════════════════════════════════
-   * FLOW 0 — AI Platform & Enterprise IT
+   * FLOW 0 — AI Platform & Business Prioritization
    * ═══════════════════════════════════════════════════════ */
   {
     id: "ai-platform",
     persona: {
-      title: "AI Platform & Enterprise IT",
-      subtitle: "OneTru AI Assist leadership (Bharat & Jonathan)",
+      title: "AI Platform & Business Prioritization",
+      subtitle: "OneTru AI Assist leadership (Jonathan & Bharat)",
     },
-    greeting: "Good afternoon, Jonathan",
+    greeting: "Good afternoon",
     userQuery:
-      "Give me a concrete plan for onboarding Workday, Coupa, Jira, Confluence, Remedy, Salesforce, and Outlook content into OneTru AI Assist using Glean as the connector and search layer. Summarize what Glean provides out-of-the-box vs. what we'd still have to build, how permissions and data residency would be handled, and a realistic 60–90 day rollout sequence.",
+      "Give me a recommendation for the 3 business use cases we should prioritize next for OneTru AI Assist. Base it on current pilot learnings, business impact, governance complexity, and fit with TransUnion's 2026 priorities. For each, summarize who benefits, why it matters now, the expected outcome, and what makes it a good early win.",
 
-    aiResponse: `Here's a proposed **60–90 day onboarding plan** for Workday, Coupa, Jira, Confluence, Remedy, Salesforce, and Outlook using Glean.
+    aiResponse: `Here are the **3 highest-priority next use cases** for OneTru AI Assist.
 
-**1. What Glean provides out-of-the-box**
-- Native connectors for Workday, Coupa, Jira, Confluence, Salesforce, and Microsoft 365 (Outlook/SharePoint/Teams) with delta sync, full-text indexing, and permission mirroring.¹²
-- Support for TU's existing SSO and group-based entitlements, so OneTru AI Assist only surfaces content users can already see in each source.¹
-- Search and chat interface that can be embedded into the OneTru AI Assist UI or accessed via Glean's own web app.⁴
+**1. Governed analytics copilot for fraud and credit teams**
+- **Why this should come first:** it aligns directly with TransUnion's public push toward auditable, explainable, governed analytics and builds on the same momentum as the new Analytics Orchestrator Agent.⁴
+- **Who benefits:** fraud analysts, risk analysts, product managers, and analytics leaders.
+- **Expected outcome:** faster investigation cycles, less dependency on specialist data science support, and better reuse of internal analytic know-how.¹
+- **Why it's an early win:** high strategic value, clear executive story, and strong fit with TransUnion's public narrative around governed AI and credit intelligence.²
 
-**2. Where you'd still build custom pieces**
-- **Remedy / ITSM & asset tools**: Glean can index via API, but you'll likely want a thin TU-owned adapter that normalizes ticket and CMDB schemas into your enterprise data platform.²
-- **Data platform abstractions**: to keep OneTru AI Assist vendor-agnostic, you'll continue to expose a unified data access layer; Glean's connectors plug into that where possible rather than duplicating pipelines.¹
-- **Custom agents**: e.g., "Incident Triage Assistant" or "Connector Health Monitor" built on top of Glean's APIs but branded and orchestrated from your existing AI gateway.³
+**2. Revenue and enablement assistant for sellers and solutions consultants**
+- **Why this should come second:** internal discovery already showed strong interest from enablement teams that need better synthesis across product docs, training, proposals, and call recordings.¹
+- **Who benefits:** solutions consultants, sellers, proposal teams, and new hires.
+- **Expected outcome:** faster ramp, stronger consistency, better meeting prep, and fewer "where do I find that?" bottlenecks.
+- **Why it's an early win:** the pain is concrete, the content already exists, and the demo value is immediately obvious.¹³
 
-**3. Security and data residency**
-- Glean honors row- and field-level permissions from each source system; its index never exposes content to users who don't already have access.¹²
-- Data remains in regional data centers aligned with TU policy, with all content encrypted in transit and at rest. For high-sensitivity systems (e.g., certain finance or credit bureaus), you can limit Glean to metadata-only or specific fields.
-- All AI actions are fully auditable: you can log prompts, source docs, and outputs into your existing security monitoring stack.⁴
+**3. Security and policy copilot for AI governance and sensitive-data expansion**
+- **Why this should come third:** sensitive data access is a gating issue for Salesforce, finance, and other higher-value domains — so governance acceleration unlocks the rest of the roadmap.³
+- **Who benefits:** security, compliance, architecture, and AI governance stakeholders.
+- **Expected outcome:** faster reviews, clearer approval paths, and more confidence expanding AI into sensitive workflows.
+- **Why it's an early win:** it supports the entire program, not just one department.³
 
-**4. 60–90 day rollout sequence**
+| Use Case | Primary Beneficiaries | Strategic Fit | Governance Complexity |
+|----------|----------------------|---------------|-----------------------|
+| Governed analytics copilot | Fraud / credit / risk teams | ★★★★★ | Medium | 
+| Revenue & enablement assistant | SCs / sellers / new hires | ★★★★☆ | Low |
+| Security / policy copilot | Security, compliance, architecture | ★★★★☆ | High — but unlocks everything else |
 
-| Week | Milestone |
-|------|-----------|
-| 1–2 | Stand up Glean in a non-production tenant tied to TU SSO. Connect Confluence, Jira, and SharePoint for a small IT / AI platform pilot group. |
-| 3–4 | Add Workday, Coupa, and Salesforce; validate permission behavior with HR, Procurement, and RevOps. Run side-by-side comparisons with your Gemini pilot.³ |
-| 5–8 | Bring in Remedy / ITSM data via the adapter approach and Outlook for email context. Launch a limited OneTru AI Assist + Glean pilot for IT Ops and Security.² |
-| 9–12 | Expand to additional critical systems on your 45-source list. Finalize runbooks, SLAs, and risk controls for a production-grade rollout under the OneTru AI Assist banner. |
-
-If you'd like, I can turn this into a CIO-level one-pager or a detailed workback plan for your architecture review.`,
+**Bottom line:** this framing lets the program tell a stronger story than "here is how we onboard tools." It says: here is where OneTru AI Assist creates measurable leverage next.²³`,
 
     sources: [
       {
         id: 1,
-        title: "Enterprise AI Platform — Architecture Overview",
-        subtitle: "Confluence · Enterprise Architecture",
-        iconUrl: CONFLUENCE_ICON,
-        iconFallback: null,
-        author: "Bharat Kandanoor",
-        excerpt:
-          "OneTru AI Assist is designed as a vendor-agnostic AI layer. Glean connectors plug into the unified data access layer rather than duplicating pipelines. SSO and group-based entitlements are honored across all indexed source systems.",
-      },
-      {
-        id: 2,
-        title: "OneTru AI Assist — Source Systems Inventory",
+        title: "OneTru AI Assist — Pilot Feedback",
         subtitle: "Confluence · AI Platform Team",
         iconUrl: CONFLUENCE_ICON,
         iconFallback: null,
         author: "Jonathan Soto",
         excerpt:
-          "45+ enterprise systems scoped for OneTru AI Assist: Workday, Coupa, Jira, Confluence, Remedy, Salesforce, Outlook/SharePoint/Teams. Remedy requires a custom TU-owned adapter for CMDB schema normalization. Permissions validation required with HR, Procurement, and RevOps before production rollout.",
+          "Pilot feedback highlights two areas of strongest demand: (1) fraud and analytics teams want faster, governed synthesis across model docs and attribute catalogs; (2) enablement and field teams want a single place to pull training, proposals, and call recordings. Governance complexity rated low-to-medium for both.",
+      },
+      {
+        id: 2,
+        title: "2026 AI Strategy Readout",
+        subtitle: "Strategy · Executive Review",
+        iconUrl: null,
+        iconFallback: PPT_FALLBACK,
+        author: "Bharat Kandanoor",
+        excerpt:
+          "2026 priorities: governed analytics and explainable AI outputs, structural cost savings through operational automation, and accelerated innovation via OneTru platform. All three recommended use cases map directly to these strategic pillars. Executive buy-in strongest for fraud/analytics and governance copilot.",
       },
       {
         id: 3,
-        title: "Gemini Pilot — Lessons Learned",
-        subtitle: "SharePoint · Enterprise IT",
-        iconUrl: SHAREPOINT_ICON,
+        title: "AI Governance Decision Matrix",
+        subtitle: "Confluence · Security / Architecture",
+        iconUrl: CONFLUENCE_ICON,
         iconFallback: null,
-        author: "Enterprise IT",
+        author: "Security Architecture",
         excerpt:
-          "Gemini pilot confirmed value of side-by-side comparison approach for AI vendor evaluation. Recommended running Glean connector validation in weeks 3–4 against the same test queries used in Gemini pilot to validate answer quality and coverage gap.",
+          "Governance matrix ranks use cases by data sensitivity, regulatory exposure, and approval complexity. Fraud/analytics and enablement score lowest on governance friction. Sensitive-domain expansion (Salesforce, finance, HR) requires classification coverage and SIEM integration prerequisites to be met first.",
       },
       {
         id: 4,
-        title: "Glean Connector Catalog — TU Evaluation",
-        subtitle: "PDF · Glean Evaluation Packet",
-        iconUrl: null,
-        iconFallback: PDF_FALLBACK,
-        author: "Glean Solutions Engineering",
+        title: "TransUnion Advances AI-Driven Credit Intelligence with Google Cloud",
+        subtitle: "Public · OneTru / TruIQ",
+        iconUrl: GLOBE_ICON,
+        iconFallback: null,
+        author: "TransUnion Newsroom",
         excerpt:
-          "Native connectors confirmed for: Workday, Coupa, Jira, Confluence, Salesforce, Outlook, SharePoint, Teams. All support delta sync, full-text indexing, and permission mirroring. Audit logging of prompts, source docs, and outputs supported for SIEM integration.",
+          "TransUnion's public launch of its AI Analytics Orchestrator Agent on Google Cloud positions OneTru as the platform for governed, explainable analytics across Credit, Marketing, Fraud, and Consumer Solutions. Governed analytics copilot directly extends this public narrative.",
       },
     ],
 
     followUpQuery:
-      "Turn this into a CIO-level one-pager for the architecture review",
+      "Turn this into a prioritization one-pager for the executive review",
 
     chatHistory: {
-      today: ["OneTru AI Assist — Data Onboarding Plan..."],
+      today: ["2026 AI Use Case Prioritization..."],
       recent: [
-        "45+ Source Inventory — Enterprise Apps...",
-        "Gemini Pilot — Lessons Learned...",
-        "Build vs Buy — Connector Analysis...",
-        "OneTru AI Assist Risk Register...",
-        "Executive AI Readout — CIO Prep...",
-        "TU Data Platform Reference Architecture...",
+        "OneTru AI Assist — Pilot Feedback...",
+        "2026 AI Strategy Readout...",
+        "Use Case Intake — HR / Finance / Fraud...",
+        "AI Governance Decision Matrix...",
+        "Commercial Enablement Pain Points...",
+        "Analytics Orchestrator Agent — Roadmap...",
       ],
     },
 
     showWork: {
       searchQuery:
-        "oneTru AI Assist connector strategy workday coupa jira confluence remedy salesforce outlook rollout",
+        "oneTru AI assist use case prioritization pilot feedback governance business impact 2026",
       searching: [
         {
           icon: CONFLUENCE_ICON,
           iconFallback: null,
-          label: "Enterprise AI Platform — Architecture Overview...",
+          label: "OneTru AI Assist — Pilot Feedback...",
         },
         {
-          icon: CONFLUENCE_ICON,
-          iconFallback: null,
-          label: "OneTru AI Assist — Source Systems Inventory...",
+          icon: null,
+          iconFallback: PPT_FALLBACK,
+          label: "2026 AI Strategy Readout...",
         },
-        { icon: null, iconFallback: null, label: "+8 more" },
+        { icon: null, iconFallback: null, label: "+6 more" },
       ],
       reading: [
         {
           icon: CONFLUENCE_ICON,
           iconFallback: null,
-          label: "OneTru AI Assist — Source Systems Inventory...",
+          label: "OneTru AI Assist — Pilot Feedback...",
         },
         {
           icon: null,
-          iconFallback: PDF_FALLBACK,
-          label: "Glean Connector Catalog — TU Evaluation...",
+          iconFallback: PPT_FALLBACK,
+          label: "2026 AI Strategy Readout...",
         },
         {
-          icon: SHAREPOINT_ICON,
+          icon: CONFLUENCE_ICON,
           iconFallback: null,
-          label: "Gemini Pilot — Lessons Learned...",
+          label: "AI Governance Decision Matrix...",
         },
       ],
       synthesizing: {
         icon: CONFLUENCE_ICON,
         iconFallback: null,
-        label: "OneTru AI Assist × Glean — Data Onboarding Plan",
-        note: "Cross-referencing 5 primary sources across Confluence, SharePoint, and Glean docs to propose a phased connector rollout aligned to OneTru AI Assist.",
+        label: "OneTru AI Prioritization Memo",
+        note: "Cross-referencing internal pilot feedback and governance materials with TransUnion's public AI priorities to recommend the next 3 business use cases.",
       },
     },
   },
 
   /* ═══════════════════════════════════════════════════════
-   * FLOW 1 — IT Ops & Service Reliability
+   * FLOW 1 — Fraud, Risk & Analytics
    * ═══════════════════════════════════════════════════════ */
   {
-    id: "itops",
+    id: "fraud",
     persona: {
-      title: "IT Ops & Service Reliability",
-      subtitle: "IT Ops / Service Desk lead",
+      title: "Fraud, Risk & Analytics",
+      subtitle: "TruIQ / fraud analytics / product strategy",
     },
     greeting: "Good afternoon",
     userQuery:
-      "A P1 incident has been raised for high latency on our US payment APIs. Pull a unified view that summarizes current impact and affected services, related change tickets or recent deployments, and recommended triage and escalation steps for the on-call team.",
+      "A lender partner is seeing rising first-payment default and possible synthetic identity risk in near-prime auto originations. Pull together the relevant model notes, attribute definitions, partner escalations, and governance guidance, then recommend the most likely drivers, the first 3 analyses we should run, and the first interventions we should test.",
 
-    aiResponse: `Here's a **unified P1 view** for the US payment API latency incident.
+    aiResponse: `Here's a **focused working brief** for the near-prime auto risk spike.
 
-**1. Current impact**
-- Remedy ticket INC‑45821 reports p95 latency > 3 seconds and sporadic timeouts for the /authorize and /capture endpoints in the US region.¹
-- Monitoring data in the linked dashboard shows impact starting at 10:42 CT, primarily affecting card and loan origination flows for select partners.⁴
-- No hard errors yet, but SLO burn rate indicates potential SLA breach within 45–60 minutes if unresolved.¹
+**1. Most likely drivers**
+- Drift in a small set of identity consistency and thin-file behavioral attributes — the pattern in Q1 feature performance data shows degradation concentrated in 3–4 synthetic-risk signals.¹²
+- A higher share of applications entering from partner/channel combinations with historically noisier applicant profiles, as flagged in partner escalations.³
+- Recent policy tuning likely improved conversion but may have widened the range of applicants entering manual review or approval bands.¹
 
-**2. Related changes / potential causes**
-- Linked change ticket CHG‑2379 deployed Payment Gateway v4.3 to US at 09:55 CT, including:²
-  - New fraud‑scoring callout to an external service.
-  - Configuration updates to retry logic on downstream credit services.
-- Known Issues doc flags a prior pattern where misconfigured timeouts on the external fraud service caused similar latency spikes under load.³
+**2. First 3 analyses to run**
 
-**3. Recommended triage steps (from runbook)**
+1. **Attribute drift analysis** on the top synthetic-risk features for the last 30–60 days — compare PSI and feature stability against the Q1 baseline in the attribute catalog.¹²
+2. **Channel / partner decomposition** to isolate whether the spike is concentrated in a narrow acquisition cohort rather than a broad portfolio shift.³
+3. **Adverse-action / explainability review** to confirm any intervention can be defended clearly to internal governance and customer teams.³⁴
 
-1. **Validate scope**
-   - Confirm whether EU/APAC regions are unaffected.
-   - Check if non-payment APIs on the same cluster show similar symptoms.³
+**3. First interventions to test**
+- Tighten review thresholds for the highest-risk synthetic indicators in the affected segment, using the escalation cohort as the starting population.²
+- Add a targeted step-up identity check only for the riskiest cohort, rather than applying broad friction that degrades approval rates.³
+- Package the workflow into a reusable analyst playbook so future teams can run the same investigation faster.⁴
 
-2. **Quick mitigations**
-   - If error rate remains low but latency is high, temporarily disable the new fraud callout via feature flag (see "v4.3 rollout" section of the runbook).²
-   - If timeouts start to spike, follow "rollback to v4.2" procedure in CHG‑2379.
+**4. Governance guardrails**
+The Risk Committee explainability standards require any model or threshold change to be documented with a clear rationale before production deployment.³ Running this as a monitored A/B test with defined rollback criteria is the recommended path.
 
-3. **Communication**
-   - Notify On‑Call Incident Commander and update the #it‑incidents channel with the current status and mitigation path.³
-   - If rollback is initiated, trigger the standard customer comms template for degraded performance (linked in the runbook).
-
-**4. Escalation path**
-- If latency remains elevated 15 minutes after disabling the fraud callout, escalate to:
-  - Payments SRE lead on call.
-  - Fraud Services owner (for external dependency review).
-  - OneTru AI Assist team only if the issue appears to be query-routing or agent related.¹⁴
-
-I can also draft the incident timeline and PIR outline once the incident is resolved.`,
+I can also help draft the analyst playbook or pull the relevant governance checklist for threshold changes.`,
 
     sources: [
       {
         id: 1,
-        title: "INC‑45821 — Payment API Latency (US)",
-        subtitle: "Remedy · IT Ops",
+        title: "Fraud Feature Performance — Q1",
+        subtitle: "Tableau · Fraud Analytics",
         iconUrl: null,
-        iconFallback: REMEDY_FALLBACK,
-        author: "IT Ops On-Call",
+        iconFallback: TABLEAU_FALLBACK,
+        author: "Fraud Analytics Team",
         excerpt:
-          "INC-45821: P1 — p95 latency > 3s on /authorize and /capture endpoints, US region. Impact start: 10:42 CT. Card and loan origination flows affected for select partners. SLO burn rate indicates potential breach within 45–60 min. No hard errors reported yet.",
+          "Q1 feature performance shows PSI degradation on 3–4 synthetic-risk signals for near-prime auto segment. Thin-file behavioral attributes showing largest drift. Identity consistency features stable at portfolio level but degraded in affected origination cohort. Baseline comparison period: Q4 prior year.",
       },
       {
         id: 2,
-        title: "CHG‑2379 — Payment Gateway v4.3 Deployment",
-        subtitle: "Jira · Engineering",
-        iconUrl: JIRA_ICON,
+        title: "Attribute Catalog — Synthetic Risk Signals",
+        subtitle: "Confluence · Data Science",
+        iconUrl: CONFLUENCE_ICON,
         iconFallback: null,
-        author: "Payments Engineering",
+        author: "Data Science",
         excerpt:
-          "CHG-2379 deployed Payment Gateway v4.3 to US at 09:55 CT. Changes include: new fraud-scoring callout to external service, retry logic config updates on downstream credit services. Rollback procedure to v4.2 documented in change ticket.",
+          "Synthetic identity signal set covers identity consistency, thin-file behavioral indicators, and application velocity patterns. Recommended PSI threshold for flagging material drift: >0.1. Attribute definitions, approved usage scope, and model version mapping documented for governance compliance.",
       },
       {
         id: 3,
-        title: "API Latency Runbook — Payments",
-        subtitle: "Confluence · SRE",
-        iconUrl: CONFLUENCE_ICON,
-        iconFallback: null,
-        author: "SRE Team",
+        title: "Partner Escalations — Auto Lending",
+        subtitle: "CRM · Client Delivery",
+        iconUrl: null,
+        iconFallback: SALESFORCE_FALLBACK,
+        author: "Client Delivery",
         excerpt:
-          "Triage sequence for payment API latency: (1) confirm regional scope, (2) disable fraud callout via feature flag if error rate low, (3) initiate v4.x rollback if timeouts spike. Notify #it-incidents channel and trigger customer comms template if rollback initiated.",
+          "Escalation log shows elevated first-payment default concerns from 2 partner relationships in near-prime auto. Partner feedback attributes spike to recent origination channel mix shift. Recommended response: channel decomposition analysis and targeted review threshold adjustment before broad policy change.",
       },
       {
         id: 4,
-        title: "US Region Service Map",
-        subtitle: "SharePoint · Architecture",
+        title: "Risk Committee Notes — Explainability Standards",
+        subtitle: "SharePoint · Risk Governance",
         iconUrl: SHAREPOINT_ICON,
         iconFallback: null,
-        author: "Platform Architecture",
+        author: "Risk Governance",
         excerpt:
-          "US region service topology for payment cluster. Payment Gateway fronts /authorize and /capture; downstream dependencies include fraud service (external) and credit bureau adapters. Escalation contacts: Payments SRE lead, Fraud Services owner, OneTru AI Assist team for agent-routing issues.",
+          "All model and threshold changes require documented rationale, explainability evidence, and A/B test design with rollback criteria before production deployment. Analyst playbooks should be filed in the workflow library for reuse. Adverse-action documentation must be prepared for any population-level intervention.",
       },
     ],
 
     followUpQuery:
-      "Draft the incident timeline and PIR outline for INC‑45821",
+      "Draft the analyst playbook for this synthetic identity investigation",
 
     chatHistory: {
-      today: ["P1 Incident — Payment API Latency (US Region)..."],
+      today: ["Near-Prime Auto Risk — Synthetic Identity Review..."],
       recent: [
-        "Incident Runbook — Latency / Timeouts...",
-        "Change Calendar — November Releases...",
-        "Remedy Queue — Open Sev 1–2 Tickets...",
-        "Asset CMDB — US Region Services...",
-        "Known Issues — OneTru AI Assist Integrations...",
-        "Post-Incident Review — October Outage...",
+        "Analytics Orchestrator Agent — Reusable Workflows...",
+        "Partner Escalations — Auto Originations...",
+        "Fraud Feature Performance — Q1...",
+        "Attribute Catalog — Synthetic Risk Signals...",
+        "Risk Committee Notes — Explainability...",
+        "TruIQ Product Strategy — Self-Service Analytics...",
       ],
     },
 
     showWork: {
       searchQuery:
-        "P1 payment api latency US region remedy incident jira change deployment known issues",
+        "synthetic identity auto originations first payment default attribute drift explainability",
       searching: [
         {
           icon: null,
-          iconFallback: REMEDY_FALLBACK,
-          label: "Remedy Ticket — INC-45821 (Payment API Latency — US)...",
-        },
-        {
-          icon: JIRA_ICON,
-          iconFallback: null,
-          label: "Jira Change — CHG-2379 Payment Gateway v4.3...",
-        },
-        { icon: null, iconFallback: null, label: "+7 more" },
-      ],
-      reading: [
-        {
-          icon: null,
-          iconFallback: REMEDY_FALLBACK,
-          label: "Remedy Ticket — INC-45821...",
+          iconFallback: TABLEAU_FALLBACK,
+          label: "Fraud Feature Performance — Q1...",
         },
         {
           icon: CONFLUENCE_ICON,
           iconFallback: null,
-          label: "API Latency Runbook — Payments...",
+          label: "Attribute Catalog — Synthetic Risk Signals...",
+        },
+        { icon: null, iconFallback: null, label: "+5 more" },
+      ],
+      reading: [
+        {
+          icon: null,
+          iconFallback: TABLEAU_FALLBACK,
+          label: "Fraud Feature Performance — Q1...",
         },
         {
-          icon: JIRA_ICON,
+          icon: CONFLUENCE_ICON,
           iconFallback: null,
-          label: "Jira Change — CHG-2379...",
+          label: "Attribute Catalog — Synthetic Risk Signals...",
+        },
+        {
+          icon: SHAREPOINT_ICON,
+          iconFallback: null,
+          label: "Risk Committee Notes — Explainability Standards...",
         },
       ],
       synthesizing: {
         icon: CONFLUENCE_ICON,
         iconFallback: null,
-        label: "P1 Incident Summary — Payment API Latency",
-        note: "Cross-referencing 4 primary sources across Remedy, Jira, Confluence, and SharePoint to generate a unified P1 incident view for the on-call team.",
+        label: "Auto Lending Risk Analysis Brief",
+        note: "Cross-referencing model context, partner feedback, and governance standards to propose a governed next-step analysis plan.",
       },
     },
   },
@@ -309,45 +297,40 @@ I can also draft the incident timeline and PIR outline once the incident is reso
     id: "security",
     persona: {
       title: "Security, Risk & Compliance",
-      subtitle: "Security Strategy, Planning & Transformation",
+      subtitle: "Security strategy, governance, and data controls",
     },
-    greeting: "Good afternoon, Laura",
+    greeting: "Good afternoon",
     userQuery:
-      "Prepare a concise briefing on our current controls for Generative AI & OneTru AI Assist access, sensitive data classification (PCI, consumer credit, HR), and third-party AI vendors like Glean. Highlight any open high-severity gaps from the last quarter and suggest 3 concrete actions for the next AI Governance Steering Committee.",
+      "Prepare a concise briefing on what must be true before we expand OneTru AI Assist into more sensitive domains like Salesforce, finance, and broader HR data. Summarize required controls, current gaps, decision gates for approval, and 3 actions for the next AI Governance Steering Committee.",
 
-    aiResponse: `Here's a **briefing on current AI-related controls and gaps**.
+    aiResponse: `Here's the **readiness brief** for expanding OneTru AI Assist into more sensitive domains.
 
-**1. Generative AI & OneTru AI Assist access**
-- OneTru AI Assist is limited to employees in Enterprise, HR, and IT Ops for the current pilot, with access gated via SSO and group membership.¹
-- Prompts and responses are logged for audit, but logs are stored separately from application data with a 90-day retention policy.⁴
-- External LLM providers (e.g., Gemini) are configured to exclude training on TU data and are accessed only via approved gateways.¹
+**Required controls**
+- Confirmed classification coverage on all target repositories¹²
+- Permission-aware access mirrored from source systems — no user sees content they can't already access¹
+- Audited prompt / answer logging with agreed retention and access policy²
+- Clear approval path for any workflow touching regulated or high-sensitivity data³
+- Explainability standards for any analytics-derived outputs used in decisions⁴
 
-**2. Data classification & scope**
-- Current pilot explicitly excludes PCI and consumer credit file content, focusing instead on:²
-  - Enterprise tools (Jira, Confluence, Workday, Coupa, Remedy, Salesforce).
-  - Internal policies, architecture docs, and runbooks.
-- HR data in Workday is accessible only at an aggregated or redacted level per the classification policy.²
+**Current gaps**
+- Uneven classification coverage on some legacy repositories slated for future ingestion¹²
+- Incomplete agreement on what "approved" AI use looks like by business function — shadow tooling is filling the vacuum¹
+- Unresolved logging / SIEM integration questions that block broader expansion sign-off³
 
-**3. Third-party AI vendors (Glean)**
-- Security review for Glean notes:³
-  - SOC 2 type controls, encryption in transit and at rest, SSO integration.
-  - Permission mirroring for each source system, reducing risk of oversharing.
-  - Option for regional data hosting aligned with TU's data residency requirements.
-- Open questions include:
-  - Finalizing data residency mapping for EU and India content.³
-  - Confirming how access logs from Glean will be fed into TU's SIEM.
+**Recommended decision gates**
 
-**4. Open high-severity gaps (last quarter)**
-- Incomplete data classification tags on several legacy repositories that OneTru AI Assist may ingest in future phases.²⁴
-- Lack of a formal AI usage standard for business teams (shadow pilots and ad-hoc tools).¹
-- Need for centralized incident handling for AI-related data exposure events.⁴
+| Gate | Condition |
+|------|-----------|
+| 1 | No expansion until targeted repositories meet classification-readiness threshold |
+| 2 | No sensitive-domain rollout without agreed monitoring / logging pattern |
+| 3 | No business launch without named owner for governance, incident response, and exception handling |
 
-**5. Recommended actions for the next Steering Committee**
-1. **Approve a phased expansion** of OneTru AI Assist + Glean into additional systems only once classification tags reach >95% coverage on targeted repositories.²
-2. **Endorse a TU-wide AI Acceptable Use Policy**, with explicit guidance on internal vs. external tools and approved patterns for customer-facing use.¹
-3. **Require all approved AI vendors** (including Glean) to stream access logs into the central SIEM and define standard detection rules for anomalous access.³
+**3 actions for the next Steering Committee**
+1. **Approve a formal expansion rubric** for sensitive systems — define what "ready" means with specific, measurable criteria.²³
+2. **Finalize AI acceptable-use standards** by function, with explicit guidance distinguishing internal from external tools and approved patterns for customer-facing use.¹
+3. **Standardize logging and anomaly-detection expectations** for approved AI vendors and internal agents — then require all approved vendors (including Glean) to meet the standard before sensitive-domain access is granted.³⁴
 
-I can also convert this into a 2-slide summary for the Steering Committee deck.`,
+Clearing these three gates would also accelerate the governed analytics and enablement use cases already identified as highest priority.`,
 
     sources: [
       {
@@ -356,9 +339,9 @@ I can also convert this into a 2-slide summary for the Steering Committee deck.`
         subtitle: "SharePoint · Security Strategy",
         iconUrl: SHAREPOINT_ICON,
         iconFallback: null,
-        author: "Laura Delaney",
+        author: "Security Strategy",
         excerpt:
-          "OneTru AI Assist pilot access gated to Enterprise, HR, and IT Ops via SSO. External LLMs (Gemini) configured to exclude TU data from training. Lack of formal AI Acceptable Use Policy identified as high-severity gap — shadow pilots and ad-hoc tools proliferating across business teams.",
+          "Risk assessment confirms pilot access is appropriately scoped but flags: incomplete classification on legacy repositories, lack of formal AI acceptable-use policy, and shadow tooling proliferating across business teams. All three identified as high-severity prerequisites for sensitive-domain expansion.",
       },
       {
         id: 2,
@@ -368,7 +351,7 @@ I can also convert this into a 2-slide summary for the Steering Committee deck.`
         iconFallback: null,
         author: "InfoSec",
         excerpt:
-          "PCI and consumer credit file content explicitly excluded from current AI pilot scope. HR data accessible at aggregated/redacted level only. Incomplete classification tags on legacy repositories flagged as high-severity gap — blocks safe expansion of OneTru AI Assist to additional source systems.",
+          "PCI and consumer credit file content explicitly excluded from current AI pilot scope. Classification coverage gaps on legacy repositories are a blocking condition for expanding OneTru AI Assist to Salesforce, finance, and broader HR data. Coverage must reach defined threshold before expansion approval.",
       },
       {
         id: 3,
@@ -378,7 +361,7 @@ I can also convert this into a 2-slide summary for the Steering Committee deck.`
         iconFallback: null,
         author: "Vendor Risk Management",
         excerpt:
-          "Glean review confirmed: SOC 2 type controls, encryption in transit/at rest, SSO integration, permission mirroring per source. Open items: EU and India data residency mapping not finalized; access log streaming into TU SIEM not yet configured. Regional data hosting option available per TU residency requirements.",
+          "Glean review confirmed: SOC 2 controls, encryption in transit/at rest, SSO integration, permission mirroring per source system. Open items blocking sensitive-domain expansion: SIEM log integration not yet configured, EU and India data residency mapping not finalized.",
       },
       {
         id: 4,
@@ -388,7 +371,7 @@ I can also convert this into a 2-slide summary for the Steering Committee deck.`
         iconFallback: GRC_FALLBACK,
         author: "Risk & Compliance",
         excerpt:
-          "Q4 exceptions include: 90-day audit log retention for AI prompts/responses stored outside standard data warehouse. No centralized incident response procedure for AI-related data exposure events. Both flagged as high-severity requiring Steering Committee action in Q1.",
+          "Q4 exceptions flagged as high-severity: no centralized incident response procedure for AI-related data exposure events; prompt/answer audit logs stored outside standard data warehouse. Both must be resolved before Steering Committee can approve expansion into Salesforce or finance domains.",
       },
     ],
 
@@ -396,7 +379,7 @@ I can also convert this into a 2-slide summary for the Steering Committee deck.`
       "Convert this into a 2-slide summary for the Steering Committee deck",
 
     chatHistory: {
-      today: ["GenAI & OneTru AI Assist — Control Overview..."],
+      today: ["AI Expansion Controls — Sensitive Data Readiness..."],
       recent: [
         "AI Risk Assessment — Draft...",
         "Data Classification Policy — Updated...",
@@ -409,7 +392,7 @@ I can also convert this into a 2-slide summary for the Steering Committee deck.`
 
     showWork: {
       searchQuery:
-        "AI risk assessment oneTru AI Assist data classification PCI consumer credit HR vendor evaluation Glean exceptions Q4",
+        "AI governance sensitive data salesforce finance HR controls decision gates",
       searching: [
         {
           icon: SHAREPOINT_ICON,
@@ -421,7 +404,7 @@ I can also convert this into a 2-slide summary for the Steering Committee deck.`
           iconFallback: null,
           label: "Data Classification & Handling Policy v3.2...",
         },
-        { icon: null, iconFallback: null, label: "+6 more" },
+        { icon: null, iconFallback: null, label: "+5 more" },
       ],
       reading: [
         {
@@ -443,159 +426,150 @@ I can also convert this into a 2-slide summary for the Steering Committee deck.`
       synthesizing: {
         icon: CONFLUENCE_ICON,
         iconFallback: null,
-        label: "GenAI & OneTru AI Assist — Control Overview",
-        note: "Cross-referencing 4 primary sources across SharePoint, Confluence, and GRC/Jira to summarize AI controls and open risks.",
+        label: "Sensitive Data Expansion Brief",
+        note: "Cross-referencing security, policy, and governance materials to define what \"ready for expansion\" should mean.",
       },
     },
   },
 
   /* ═══════════════════════════════════════════════════════
-   * FLOW 3 — Solutions Consulting & Enablement
+   * FLOW 3 — Revenue & Enablement
    * ═══════════════════════════════════════════════════════ */
   {
     id: "enablement",
     persona: {
-      title: "Solutions Consulting & Enablement",
-      subtitle: "TransUnion Commercial University / SC CoE",
+      title: "Revenue & Enablement",
+      subtitle: "Commercial University / solutions consulting / field teams",
     },
-    greeting: "Good afternoon, Elizabeth",
+    greeting: "Good afternoon",
     userQuery:
-      "I'm onboarding a new solutions consultant supporting banking and lending. Build a 30–60–90 day ramp plan that combines Commercial University training modules, OneTru AI Assist use cases and internal playbooks, and 3–5 must-listen Gong calls and example proposals.",
+      "I'm preparing for a meeting with a regional bank that cares about fraud prevention, identity, and credit risk. Build me a concise seller and solutions consultant call brief that pulls from approved messaging, relevant training content, past Gong calls, proposal snippets, and competitive intel. Include the best value story, 3 proof points to use, likely objections, and the best follow-up asset to send.",
 
-    aiResponse: `Here's a **30–60–90 day ramp plan** for a new banking solutions consultant.
+    aiResponse: `Here's the **call brief** for your regional bank meeting.
 
-**1. Days 0–30 — Foundations**
-- **Commercial University**
-  - Complete core SC curriculum: TU value story, data products, industry overview.¹
-  - Pass required assessments on data privacy, compliance, and "Information for Good" positioning.
-- **Product & AI**
-  - Self-guided modules on credit, fraud, and identity solutions, plus an intro to OneTru AI Assist and how SCs are expected to use it in discovery and demos.²
-- **Call listening (Gong)**
-  - Listen to 3 curated banking AI calls, focusing on how SCs frame TU's data advantage and how they explain OneTru AI Assist and AI governance.⁴
-  - Capture 3–5 talk tracks and objections in a personal playbook.
+**Best value story**
+TransUnion wins when it helps customers make better risk decisions with more confidence and less friction. Position the conversation around:
+- faster, more explainable decisions¹
+- stronger fraud and identity confidence backed by trusted data assets²
+- practical operational lift for analysts and client teams³
 
-**2. Days 31–60 — Applied Practice**
-- **Shadowing & roleplays**
-  - Shadow 4–6 live customer calls with a senior SC in banking / lending.²
-  - Run two internal dry-runs of a OneTru AI Assist-enabled demo using this same interactive site pattern.
-- **Content & proposals**
-  - Review standard RFP responses and proposal templates for banking.³
-  - Use Glean to build a customer-specific "call brief" for two target accounts, pulling in prior calls, proposals, and competitive intel.⁴
+Frame OneTru as the way TransUnion scales reusable intelligence across teams and use cases — not just a product, but a platform advantage.¹²
 
-**3. Days 61–90 — Ownership**
-- **Own portions of live calls**
-  - Lead discovery for 3–5 banking accounts under a senior SC's supervision, using OneTru AI Assist to prepare and follow up.²
-- **Personalized assets**
-  - Build a reusable demo script and OneTru AI Assist agent configuration tailored to a priority segment (e.g., regional banks vs. fintech lenders).¹²
-- **Certification**
-  - Complete an internal "Banking SC Certification," including:
-    - Delivering a full end-to-end demo.³
-    - Handling security and AI governance questions confidently.
+**3 proof points to use**
 
-| Phase | Key Milestones | Gong / Proposal Resources |
-|-------|---------------|--------------------------|
-| Days 0–30 | Core curriculum, AI intro modules | 3 banking AI call recordings⁴ |
-| Days 31–60 | Shadow calls, proposal review | 2 target-account call briefs via Glean |
-| Days 61–90 | Lead discovery, Banking SC Cert | Reusable demo script + agent config |
+1. **Data + analytics + governed AI, combined** — TransUnion's strength comes from the combination of trusted data assets, deep analytics expertise, and governed AI — not any single component alone.¹
+2. **Transparency and explainability, not just speed** — regulated customers care that outputs can be defended. Lead with explainability as a feature, not a disclaimer.³
+3. **OneTru scales reusable intelligence** — frame it as the way TU consistently delivers across fraud, credit, marketing, and consumer solutions — not a one-off project.¹²
 
-I can also turn this into a checklist view for your LMS or a manager-facing tracker.`,
+**Likely objections**
+
+| Objection | Suggested response |
+|-----------|-------------------|
+| "How is this different from a generic AI tool?" | TU's advantage is the combination of proprietary data, domain analytics expertise, and governed delivery — no generic tool has that. |
+| "How do we keep outputs explainable for regulated decisions?" | Explainability is built into the delivery model — not bolted on afterward. |
+| "How do we avoid adding more tool sprawl for field teams?" | OneTru consolidates, it doesn't add. The goal is fewer tools, not more. |
+
+**Best follow-up asset to send**
+Send the most concise, approved fraud and identity value one-pager plus one proof-heavy case example that reinforces governed analytics and business outcomes. Avoid decks with more than 5 slides for a first follow-up.⁴
+
+Would you like me to pull the specific one-pager and case example from the proposal library?`,
 
     sources: [
       {
         id: 1,
-        title: "TransUnion Commercial University — SC Path",
-        subtitle: "LMS · TU Commercial University",
-        iconUrl: null,
-        iconFallback: LMS_FALLBACK,
-        author: "Elizabeth Isphording",
-        excerpt:
-          "Core SC curriculum path: TU value story, data products, industry overview, compliance assessments (data privacy, 'Information for Good'). Required certifications include Banking SC Certification covering end-to-end demo delivery and security/AI governance Q&A.",
-      },
-      {
-        id: 2,
-        title: "OneTru AI Assist — GTM Playbook",
+        title: "Fraud & Identity Messaging Framework",
         subtitle: "Confluence · Solutions Enablement",
         iconUrl: CONFLUENCE_ICON,
         iconFallback: null,
-        author: "Corinne Davis",
+        author: "Solutions Enablement",
         excerpt:
-          "SCs expected to position OneTru AI Assist in discovery and demo stages. Recommended approach: self-guided product modules on credit, fraud, and identity, followed by 4–6 shadowed calls and two internal AI-demo dry-runs before leading live accounts. Banking SC Certification covers end-to-end demo and AI governance handling.",
+          "Approved value story for fraud/identity: lead with data + analytics + governed AI combination. Three core proof points: TU data breadth and quality, explainability-first delivery, OneTru as a scalable intelligence platform. Avoid framing as speed-only — regulated customers require defensibility.",
+      },
+      {
+        id: 2,
+        title: "Commercial University — Core Curriculum",
+        subtitle: "LMS · TU Commercial University",
+        iconUrl: null,
+        iconFallback: LMS_FALLBACK,
+        author: "Commercial University",
+        excerpt:
+          "Core SC curriculum covers TU value story, product positioning for fraud/identity/credit, and OneTru AI Assist field enablement. Required framing: data advantage + governed AI. Certified messaging for regional bank segment emphasizes explainability and operational lift for analyst teams.",
       },
       {
         id: 3,
-        title: "SC Onboarding — Banking Role Guide",
-        subtitle: "SharePoint · SC CoE",
-        iconUrl: SHAREPOINT_ICON,
-        iconFallback: null,
-        author: "SC CoE",
+        title: "Gong Playlist — Fraud / Credit Calls",
+        subtitle: "Gong · Field Enablement",
+        iconUrl: null,
+        iconFallback: GONG_FALLBACK,
+        author: "Field Enablement",
         excerpt:
-          "Standard RFP response and proposal templates for banking and lending vertical. Competitive intel on Experian & Equifax positioning. Banking SC Certification requirements: full end-to-end demo delivery, handling AI governance and data residency objections, and completion of Commercial University core path.",
+          "Top-performing calls use explainability as a lead, not a qualifier. Best objection handling: 'How do we avoid tool sprawl?' — answered by positioning OneTru as consolidation, not addition. Most effective proof moments: demos of governed workflow reuse across segments.",
       },
       {
         id: 4,
-        title: "Gong Playlist — AI & Data Solutions (Banking)",
-        subtitle: "Gong · Solutions Consulting",
-        iconUrl: null,
-        iconFallback: GONG_FALLBACK,
-        author: "Solutions Consulting",
+        title: "Proposal Library — Financial Services",
+        subtitle: "SharePoint · Revenue Content",
+        iconUrl: SHAREPOINT_ICON,
+        iconFallback: null,
+        author: "Revenue Content",
         excerpt:
-          "Curated playlist of top banking AI calls: 3 recordings focused on TU data advantage framing and OneTru AI Assist positioning. Recommended for Days 0–30 listening. Use Glean to build customer-specific call briefs by pulling prior calls, proposals, and competitive intel for target accounts in Days 31–60.",
+          "Approved proposal templates for banking/lending segment. Best follow-up asset: fraud/identity one-pager (2 pages, approved Q1 2026) plus one proof example from regional bank cohort. Competitive positioning vs. Experian and Equifax: lead on data governance and explainability, not price.",
       },
     ],
 
     followUpQuery:
-      "Turn this into a checklist view for the LMS or a manager-facing tracker",
+      "Pull the approved fraud and identity one-pager and best case example to send as follow-up",
 
     chatHistory: {
-      today: ["Ramp Plan — New Solutions Consultant (Banking)..."],
+      today: ["Regional Bank Call Brief — Fraud & Identity..."],
       recent: [
-        "OneTru AI Assist — SC Enablement Plan...",
-        "TU Commercial University — Core Curriculum...",
-        "Banking Use-Case Playbooks...",
-        "RFP / Proposal Library — Financial Services...",
-        "Gong Library — Top SC Calls (AI & Data)...",
+        "Commercial University — Core Curriculum...",
+        "Fraud & Identity Messaging Framework...",
+        "Approved Proposal Library — Financial Services...",
+        "Gong Playlist — Top Fraud / Credit Calls...",
         "Competitive Intel — Experian & Equifax...",
+        "OneTru Enablement FAQ...",
       ],
     },
 
     showWork: {
       searchQuery:
-        "solutions consultant ramp plan banking lending commercial university curriculum ai assist playbooks gong proposals",
+        "fraud identity credit risk seller brief proposal training gong competitive intel",
       searching: [
-        {
-          icon: SHAREPOINT_ICON,
-          iconFallback: null,
-          label: "SC Onboarding — Role Guide (Banking)...",
-        },
-        {
-          icon: null,
-          iconFallback: LMS_FALLBACK,
-          label: "TransUnion Commercial University — Core SC Path...",
-        },
-        { icon: null, iconFallback: null, label: "+6 more" },
-      ],
-      reading: [
-        {
-          icon: null,
-          iconFallback: LMS_FALLBACK,
-          label: "TransUnion Commercial University — Core SC Path...",
-        },
         {
           icon: CONFLUENCE_ICON,
           iconFallback: null,
-          label: "OneTru AI Assist — GTM Playbook...",
+          label: "Fraud & Identity Messaging Framework...",
+        },
+        {
+          icon: null,
+          iconFallback: LMS_FALLBACK,
+          label: "Commercial University — Core Curriculum...",
+        },
+        { icon: null, iconFallback: null, label: "+5 more" },
+      ],
+      reading: [
+        {
+          icon: CONFLUENCE_ICON,
+          iconFallback: null,
+          label: "Fraud & Identity Messaging Framework...",
+        },
+        {
+          icon: null,
+          iconFallback: LMS_FALLBACK,
+          label: "Commercial University — Core Curriculum...",
         },
         {
           icon: null,
           iconFallback: GONG_FALLBACK,
-          label: "Gong Playlist — AI & Data Solutions (Banking)...",
+          label: "Gong Playlist — Fraud / Credit Calls...",
         },
       ],
       synthesizing: {
         icon: CONFLUENCE_ICON,
         iconFallback: null,
-        label: "90-Day Ramp Plan — Banking Solutions Consultant",
-        note: "Cross-referencing 4 primary sources across LMS, SharePoint, Gong, and Confluence to generate a 30–60–90 ramp plan.",
+        label: "Regional Bank Call Brief — Fraud & Identity",
+        note: "Cross-referencing training, messaging, call history, and proposal content to build a field-ready brief.",
       },
     },
   },

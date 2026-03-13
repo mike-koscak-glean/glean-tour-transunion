@@ -16,12 +16,12 @@ const PersonaIcons = {
       <line x1="12" y1="22" x2="12" y2="19" />
     </svg>
   ),
-  itops: (
+  fraud: (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1C5BE0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="2" width="20" height="8" rx="2" />
-      <rect x="2" y="14" width="20" height="8" rx="2" />
-      <line x1="6" y1="6" x2="6.01" y2="6" />
-      <line x1="6" y1="18" x2="6.01" y2="18" />
+      <line x1="18" y1="20" x2="18" y2="10" />
+      <line x1="12" y1="20" x2="12" y2="4" />
+      <line x1="6" y1="20" x2="6" y2="14" />
+      <polyline points="2 20 22 20" />
     </svg>
   ),
   security: (
